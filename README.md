@@ -21,7 +21,7 @@ THEN the saved events persist
 ```
 ## Links
 
-* **Timed Quiz Page:** <https://nylesor28.github.io/scheduler/> 
+* **Work Day Scheduler Page:** <https://nylesor28.github.io/scheduler/> 
 * **Github Repo:** <https://github.com/nylesor28/scheduler>
 
 
