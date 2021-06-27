@@ -128,6 +128,7 @@ $(document).ready(function () {
  *****************************************************************************/
   $(".saveBtn").on("click", function (event) {
     var parentDiv = event.target.parentElement;
+
     var id = parseInt(parentDiv.id);
 
     var workdayItem = itemsArray[id];
@@ -135,5 +136,17 @@ $(document).ready(function () {
     itemsArray[id].taskItem = $(parentDiv).children(".task").val().trim();
 
     saveItems();
-  });
+   });
+
+
+/*****************************************************************************
+ *  Anynonmous Function to set click event when the save icon is clicked
+ *****************************************************************************/
+$(".fa-save").on("click", function(event){
+    event.stopPropagation()
+    var parentDiv = event.target.parentElement.click();
+
+})
 });
+
+
