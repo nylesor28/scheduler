@@ -4,6 +4,11 @@ body {
   line-height: 1;
 }
 
+.container{
+  border-bottom: 5px solid grey;
+  margin-bottom: 10%;
+}
+
 textarea{
   background: transparent;
   border: none;
@@ -40,6 +45,7 @@ textarea{
   background-color: #ffffff;
   color: #000000;
   border-top: 1px dashed #000000;
+
 }
 
 .past {

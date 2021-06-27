@@ -5,6 +5,10 @@ $(document).ready(function () {
   var itemsArray = [];
   var today;
 
+
+  /****************************************************************************
+ *  getItems - get workday Schedule from  localStorage and store to itemsArray 
+ ***************************************************************************/
   var getItems = function () {
     tempItemsArray = JSON.parse(localStorage.getItem("workdaySchedule"));
 
@@ -13,18 +17,19 @@ $(document).ready(function () {
     } else {
       itemsArray = tempItemsArray;
     }
-
-    //   $(".row").each(function () {
-    //     var id = $(this).attr("id")
-    //     var scheduleItem = itemsArray[id]
-    //     console.log(scheduleItem)
-    //   })
   };
 
+/****************************************************************************
+ *  saveItems - store the itemsArray to localStorage 
+ ***************************************************************************/
   var saveItems = function () {
     localStorage.setItem("workdaySchedule", JSON.stringify(itemsArray));
   };
 
+
+/******************************************************************************
+ * BuildEmptyWorkdayArray - create empty array with the workdayItem object
+ ******************************************************************************/
   var buildEmptyWorkdayArray = function () {
     for (var i = 9; i <= 20; i++) {
       var workdayItem = {
@@ -43,10 +48,11 @@ $(document).ready(function () {
 
       itemsArray.push(workdayItem);
     }
-    console.log("After Build Array: ", itemsArray);
   };
 
-  // var setBackgroup
+/***************************************************************************
+ * loadRows() - creates the timeline and display on the page
+ ***************************************************************************/
 
   var loadRows = function () {
     for (var i = 0; i < itemsArray.length; i++) {
@@ -54,13 +60,13 @@ $(document).ready(function () {
       rowEl.attr("class", "row");
       rowEl.attr("id", i);
       var hourEl = $("<div>");
-      hourEl.attr("class", "col-md-1 hour ");
+      hourEl.attr("class", "col-sm-1 hour ");
       hourEl.text(itemsArray[i].displayTime);
       var textAreaEl = $("<textarea>");
-      textAreaEl.attr("class", "col-md-10 task form-control");
+      textAreaEl.attr("class", "col-sm-10 task description");
 
       var btnEl = $("<button>");
-      btnEl.attr("class", "saveBtn col-md-1");
+      btnEl.attr("class", "saveBtn col-sm-1");
 
       var iconEl = $("<i>");
       iconEl.attr("class", "far fa-save");
@@ -74,6 +80,14 @@ $(document).ready(function () {
     }
   };
 
+  /********************************************************************************
+   * loadPage() - initially called function
+   * 1. call BuildEmptyWorkdayArray - create empty array with the workdayItem object
+   * 2. Call loadRows - creates the timeline and display on the page
+   * 3. call moment object and display date in currentDay container
+   * 4. use datediff to set the background color
+   ********************************************************************************/
+
   var loadPage = function () {
     buildEmptyWorkdayArray();
 
@@ -83,14 +97,12 @@ $(document).ready(function () {
     today = moment();
     currentDay.textContent = today.format("dddd MMMM Do");
 
-    // for(var i = 0; i<itemsArray.length; i++){
     $(".row").each(function () {
       var id = parseInt($(this).attr("id"));
       var scheduleObj = itemsArray[id];
       $(this).children(".task").text(scheduleObj.taskItem);
 
       var rowTime = moment().hour(scheduleObj.militaryTime).minute(0).second(0);
-      // console.log("rowTime: ",rowTime);
 
       var timeDiff = today.diff(rowTime, "minutes");
 
@@ -104,43 +116,24 @@ $(document).ready(function () {
     });
   };
 
+  //Calls LoadPage Function
   loadPage();
 
+
+/*****************************************************************************
+ *  Anynonmous Function to set click event when the save Buttons are clicked
+ * Gets the ID attribute from the parent element and and the value in the 
+ * associated textarea and store the value in the corresponding 
+ * area of the itemsArray
+ *****************************************************************************/
   $(".saveBtn").on("click", function (event) {
     var parentDiv = event.target.parentElement;
     var id = parseInt(parentDiv.id);
-    console.log("ID", id, "event ", parentDiv);
+
     var workdayItem = itemsArray[id];
-    console.log("ArrayItem", itemsArray);
-
+    
     itemsArray[id].taskItem = $(parentDiv).children(".task").val().trim();
-
-    //itemsArray[id].taskItem = $(this).children(".task").val().trim();
 
     saveItems();
   });
 });
-
-// function saveTask() {
-//     console.log("in savetask")
-// //   workdayItem.time = $(this).siblings(".hour").text().trim();
-// //   workdayItem.task = $(this).siblings(".task").val().trim();
-// //   itemsArray.push(workdayItem);
-// //   saveItems();
-// };
-
-// var getItems = function () {
-//     itemsArray = JSON.parse(localStorage.getItem("workdayItem")) || [];
-
-//     itemsArray.forEach(function (taskItem) {
-//       $(".row").each(function () {
-//         var id = $(this).id
-//         var divHourValue = $(this).children(".hour").text().trim();
-//         var divHourTime = parseInt(divHourValue);
-//         console.log("ID", id, "divHour: ", divHourValue, " divHourTime:  ", divHourTime )
-//         if (taskItem.time === divHourValue) {
-//           $(this).children(".task").text(taskItem.task);
-//         }
-//       });
-//     });
-//   };
